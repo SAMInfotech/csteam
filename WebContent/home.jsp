@@ -17,6 +17,7 @@
               <h3> <a href="login.jsp">Login</a></h3>
               <h3> <a href="patient.jsp">UserSignUp</a></h3>
                <h3> <a href="doctor.jsp">DoctorSignUp</a></h3>
+              <h3> <a href="addevent.jsp">addevent.jsp</a></h3>
             </div>
             <div id="content" align="center">
                 <p>

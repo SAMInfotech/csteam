@@ -1,10 +1,18 @@
 package com.data;
 
+import com.model.Event;
 import com.model.Patient;
 import com.model.Topic;
 import com.model.User;
+
+
+
 import java.sql.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 public class DAO {
 	public void savePatient(Patient p)throws Exception
 	{
@@ -99,5 +107,39 @@ public class DAO {
 			}
 		return topiclist;
 	}
+	public void saveEvent(Event event) throws Exception {
+		// TODO Auto-generated method stub
+		
+		
+		Connection con=DBManager.getCon();
+		PreparedStatement st=con.prepareStatement("insert into event(eventName,eventDescription,eventTime,eventVenue,createdById) values(?,?,?,?,?);");
+		st.setString(1, event.getEventName());
+		st.setString(2, event.getEventDescription());
+		DateFormat sqlDateFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm"); 
+		Date cdate = null;
+		try { 
+			cdate = (event.getEventTime() != null && !event.getEventTime().trim()
+					.isEmpty()) ? sqlDateFormatter.parse(event.getEventTime())
+					: new Date();
+					
+				
+					
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		st.setString(3, new SimpleDateFormat("yyyy-MM-dd HH:mm").format(cdate));
+		st.setString(4, event.getEventVenue());
+		st.setString(5, event.getCreatedById());
+		int result=st.executeUpdate();
+		if(result!=1)
+		{
+			throw new Exception("Data not inserted");
+		}
+		}
+		
+		
+		
+	
 
 }
