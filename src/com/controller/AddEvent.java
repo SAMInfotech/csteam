@@ -51,8 +51,9 @@ public class AddEvent extends HttpServlet {
 			event.setEventTime(eventDate);
 			event.setEventVenue(eventVenue);
 			event.setCreatedById(user.getUserId());
-			DAO dao = new DAO();
-		
+			
+		     DAO dao=new DAO();
+		     dao.saveEvent(event);
 			message = "Event Added Successfully";
 
 		} catch (Exception e) {

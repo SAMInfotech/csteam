@@ -7,6 +7,8 @@ import com.model.User;
 
 
 
+
+
 import java.sql.*;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -127,6 +129,7 @@ public class DAO {
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			e.getMessage();
 		}
 		st.setString(3, new SimpleDateFormat("yyyy-MM-dd HH:mm").format(cdate));
 		st.setString(4, event.getEventVenue());
@@ -139,7 +142,30 @@ public class DAO {
 		}
 		
 		
+		public ArrayList<Event> getEventDetails(){
+			ArrayList<Event> list=new ArrayList<Event>();
+			Event event=null;
+			try {
+				Connection con=DBManager.getCon();
+				PreparedStatement ps=con.prepareStatement("SELECT eventId,eventName,eventDescription,eventTime,eventVenue FROM EVENT ORDER BY eventid DESC LIMIT 5;");
+				ResultSet rs=ps.executeQuery();
+				while(rs.next()){
+					event=new Event();
+					event.setEventId(rs.getInt("eventId"));
+					event.setEventName(rs.getString("eventName"));
+					event.setEventDescription(rs.getString("eventDescription"));
+					event.setEventTime(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(rs.getTimestamp("eventTime")));
+					event.setEventVenue(rs.getString("eventVenue"));
+				    list.add(event);
+				}
+			} catch (Exception se) {
+				// TODO Auto-generated catch block
+				se.printStackTrace();
+				System.out.println("Hi");
+				
+			}	
+			return list;
+		}
 		
-	
 
 }

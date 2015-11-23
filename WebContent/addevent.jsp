@@ -56,7 +56,7 @@ $(document).ready(function(){
                 <td>Event Name:</td><td><input type="text" name="eventName"></td>
                 </tr>
                 <tr>
-                <td>Description:</td><td> <textarea rows="3" cols="21" name="eventDescription"></textarea> </td>
+                <td>Description:</td><td> <textarea rows="3" cols="15" name="eventDescription"></textarea> </td>
                 </tr>
                 <tr><td>Event Time:</td><td><input type="text" name="eventTime" id="datepicker"></td></tr>
                 <tr><td>Event Venue:</td><td><input type="text" name="eventVenue"></tr>

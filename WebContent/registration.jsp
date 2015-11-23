@@ -13,7 +13,7 @@
         </div>
         <div>
             <div id="left">
-                <h3><a href="home.jsp">Home</a></h3>
+                <h3><a href="index.jsp">Home</a></h3>
               <h3> <a href="login.jsp">Login</a></h3>
               <h3> <a href="patient.jsp">PatientSignUp</a></h3>
                <h3> <a href="doctor.jsp">DoctorSignUp</a></h3>
