@@ -38,11 +38,12 @@ public class AddEvent extends HttpServlet {
 		String eventDate = request.getParameter("eventTime");
 		
 		String eventVenue = request.getParameter("eventVenue");
+		int isActive=1;
 		HttpSession session=request.getSession();
 		User user=(User)session.getAttribute("user");
 		String resource = "addevent.jsp";
 		String message = null;
-		System.out.println(eventDate);
+		
 		// Setting value in the Event class
 		try {
 			Event event = new Event();
@@ -51,6 +52,7 @@ public class AddEvent extends HttpServlet {
 			event.setEventTime(eventDate);
 			event.setEventVenue(eventVenue);
 			event.setCreatedById(user.getUserId());
+			event.setIsActive(isActive);
 			
 		     DAO dao=new DAO();
 		     dao.saveEvent(event);

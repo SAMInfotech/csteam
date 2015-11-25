@@ -10,6 +10,7 @@ public class Event implements Serializable {
 	private String eventTime;
 	private String eventVenue;
 	private String createdById;
+	private int isActive;
 	public String getCreatedById() {
 		return createdById;
 	}
@@ -45,6 +46,12 @@ public class Event implements Serializable {
 	}
 	public void setEventVenue(String eventVenue) {
 		this.eventVenue = eventVenue;
+	}
+	public int getIsActive() {
+		return isActive;
+	}
+	public void setIsActive(int isActive) {
+		this.isActive = isActive;
 	}
 	
 

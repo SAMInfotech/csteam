@@ -116,7 +116,7 @@ public class DAO {
 		
 		
 		Connection con=DBManager.getCon();
-		PreparedStatement st=con.prepareStatement("insert into event(eventName,eventDescription,eventTime,eventVenue,createdById) values(?,?,?,?,?);");
+		PreparedStatement st=con.prepareStatement("insert into event(eventName,eventDescription,eventTime,eventVenue,createdById,isActive) values(?,?,?,?,?,?);");
 		st.setString(1, event.getEventName());
 		st.setString(2, event.getEventDescription());
 		DateFormat sqlDateFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm"); 
@@ -136,6 +136,7 @@ public class DAO {
 		st.setString(3, new SimpleDateFormat("yyyy-MM-dd HH:mm").format(cdate));
 		st.setString(4, event.getEventVenue());
 		st.setString(5, event.getCreatedById());
+		st.setInt(6, event.getIsActive());
 		int result=st.executeUpdate();
 		if(result!=1)
 		{
@@ -149,7 +150,8 @@ public class DAO {
 			Event event=null;
 			try {
 				Connection con=DBManager.getCon();
-				PreparedStatement ps=con.prepareStatement("SELECT * FROM EVENT ORDER BY eventid DESC LIMIT 5;");
+				PreparedStatement ps=con.prepareStatement("SELECT * FROM EVENT where isActive=? ORDER BY eventid DESC LIMIT 5;");
+				ps.setInt(1, 1);
 				ResultSet rs=ps.executeQuery();
 				while(rs.next()){
 					event=new Event();
@@ -159,6 +161,7 @@ public class DAO {
 					event.setEventTime(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(rs.getTimestamp("eventTime")));
 					event.setEventVenue(rs.getString("eventVenue"));
 					event.setCreatedById(rs.getString("createdById"));
+					event.setIsActive(rs.getInt("isActive"));
 				    list.add(event);
 				}
 			} catch (Exception se) {
@@ -174,7 +177,8 @@ public class DAO {
 			Event event=null;
 			try {
 				Connection con=DBManager.getCon();
-				PreparedStatement ps=con.prepareStatement("SELECT * FROM EVENT;");
+				PreparedStatement ps=con.prepareStatement("SELECT * FROM EVENT where isActive=?;");
+				ps.setInt(1, 1);
 				ResultSet rs=ps.executeQuery();
 				while(rs.next()){
 					event=new Event();
@@ -184,6 +188,7 @@ public class DAO {
 					event.setEventTime(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(rs.getTimestamp("eventTime")));
 					event.setEventVenue(rs.getString("eventVenue"));
 					event.setCreatedById(rs.getString("createdById"));
+					event.setIsActive(rs.getInt("isActive"));
 				    list.add(event);
 				}
 			} catch (Exception se) {
@@ -224,7 +229,7 @@ public class DAO {
 		}
 		public ArrayList<Event> updateEvent(Event event) {
 			// TODO Auto-generated method stub
-			System.out.println("Hi");
+			
 			ArrayList<Event> list=new ArrayList<Event>();
 			try {
 				Connection con;
@@ -264,6 +269,34 @@ public class DAO {
 				
 			}
 			return list;
+		}
+		public ArrayList<Event> deleteEvent(int eventId) {
+			// TODO Auto-generated method stub
+			
+			ArrayList<Event> list=new ArrayList<Event>();
+			try {
+				Connection con;
+				con = DBManager.getCon();
+				PreparedStatement st;
+				st = con.prepareStatement("Update event set isActive=? where eventId=?;");
+                 st.setInt(1, -1);
+                 st.setInt(2, eventId);
+
+				int result=st.executeUpdate();
+				
+				if(result>0)
+				{
+					list=getAllEvents();
+				}
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				
+				
+			}
+			return list;
+			
+			
 		}
 		
 		
