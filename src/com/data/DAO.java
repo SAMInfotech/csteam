@@ -9,6 +9,8 @@ import com.model.User;
 
 
 
+
+
 import java.sql.*;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -147,7 +149,7 @@ public class DAO {
 			Event event=null;
 			try {
 				Connection con=DBManager.getCon();
-				PreparedStatement ps=con.prepareStatement("SELECT eventId,eventName,eventDescription,eventTime,eventVenue FROM EVENT ORDER BY eventid DESC LIMIT 5;");
+				PreparedStatement ps=con.prepareStatement("SELECT * FROM EVENT ORDER BY eventid DESC LIMIT 5;");
 				ResultSet rs=ps.executeQuery();
 				while(rs.next()){
 					event=new Event();
@@ -156,6 +158,7 @@ public class DAO {
 					event.setEventDescription(rs.getString("eventDescription"));
 					event.setEventTime(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(rs.getTimestamp("eventTime")));
 					event.setEventVenue(rs.getString("eventVenue"));
+					event.setCreatedById(rs.getString("createdById"));
 				    list.add(event);
 				}
 			} catch (Exception se) {
@@ -166,6 +169,104 @@ public class DAO {
 			}	
 			return list;
 		}
+		public ArrayList<Event> getAllEvents() {
+			ArrayList<Event> list=new ArrayList<Event>();
+			Event event=null;
+			try {
+				Connection con=DBManager.getCon();
+				PreparedStatement ps=con.prepareStatement("SELECT * FROM EVENT;");
+				ResultSet rs=ps.executeQuery();
+				while(rs.next()){
+					event=new Event();
+					event.setEventId(rs.getInt("eventId"));
+					event.setEventName(rs.getString("eventName"));
+					event.setEventDescription(rs.getString("eventDescription"));
+					event.setEventTime(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(rs.getTimestamp("eventTime")));
+					event.setEventVenue(rs.getString("eventVenue"));
+					event.setCreatedById(rs.getString("createdById"));
+				    list.add(event);
+				}
+			} catch (Exception se) {
+				// TODO Auto-generated catch block
+				se.printStackTrace();
+				System.out.println("Hi");
+				
+			}	
+			return list;
+			
+		}
+		public Event editEventDetails(int eventId) {
+			Event event=null;
+			try {
+				Connection con=DBManager.getCon();
+				PreparedStatement ps=con.prepareStatement("SELECT * FROM EVENT WHERE eventId=?;");
+				ps.setInt(1, eventId);
+				
+				ResultSet rs=ps.executeQuery();
+				while(rs.next()){
+					event=new Event();
+					event.setEventId(rs.getInt("eventId"));
+					event.setEventName(rs.getString("eventName"));
+					event.setEventDescription(rs.getString("eventDescription"));
+					event.setEventTime(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(rs.getTimestamp("eventTime")));
+					event.setEventVenue(rs.getString("eventVenue"));
+					event.setCreatedById(rs.getString("createdById"));
+				   
+				}
+			} catch (Exception se) {
+				// TODO Auto-generated catch block
+				se.printStackTrace();
+				System.out.println("Hi");
+				
+			}	
+			return event;
+			
+		}
+		public ArrayList<Event> updateEvent(Event event) {
+			// TODO Auto-generated method stub
+			System.out.println("Hi");
+			ArrayList<Event> list=new ArrayList<Event>();
+			try {
+				Connection con;
+				con = DBManager.getCon();
+				PreparedStatement st;
+				st = con.prepareStatement("Update event set eventName=?,eventDescription=?,eventTime=?,eventVenue=?,createdById=? where eventId=?;");
+				st.setString(1, event.getEventName());
+				st.setString(2, event.getEventDescription());
+				DateFormat sqlDateFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm"); 
+				Date cdate = null;
+				try { 
+					cdate = (event.getEventTime() != null && !event.getEventTime().trim()
+							.isEmpty()) ? sqlDateFormatter.parse(event.getEventTime())
+							: new Date();
+							
+						
+							
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					e.getMessage();
+				}
+				st.setString(3, new SimpleDateFormat("yyyy-MM-dd HH:mm").format(cdate));
+				st.setString(4, event.getEventVenue());
+				st.setString(5, event.getCreatedById());
+				st.setInt(6, event.getEventId());
+				int result=st.executeUpdate();
+				
+				if(result>0)
+				{
+					list=getAllEvents();
+				}
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				
+				
+			}
+			return list;
+		}
+		
+		
 		
 
 }

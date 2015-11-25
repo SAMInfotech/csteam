@@ -24,6 +24,7 @@
               <h3> <a href="MyTopics">My Topics</a></h3>
                <h3> <a href="addtopic.jsp">Add Topic</a></h3>
                 <h3> <a href="addevent.jsp">Add Event</a></h3>
+                <h3> <a href="GetAllEvents">View Events</a></h3>
                 <h3> <a href="#">Sign Out</a></h3>
             </div>
             <div id="content">
